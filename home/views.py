@@ -1,8 +1,10 @@
 from django.db import models
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.contrib.auth import login
+from django.contrib.auth import login,authenticate,logout
 from home.models import User
+from home.forms import CreateUserForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -13,45 +15,62 @@ def addproduct(request):
     return HttpResponse('This is the page to add products.')
 
 def login_view(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        query = User.objects.raw("Select count(*) from User where email = '" + email + "' and password = '" + password + "'")
-        
-        if query == 1:
-            #log the user in
-            return render(request,'home.html')
-        else:
-            print("incorrect email or password")
     
-    return render(request,'login.html',)
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request,username=username,password=password)
+
+        if user is not None:
+            login(request,user)
+            return render(request,'home.html')
+    
+    
+    return render(request,'login.html')
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
 
 def signup_view(request):
+    form = CreateUserForm()
+
     if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request,'Account was created for '+ user)
+            return render(request,'login.html')
+
+    context = {'form':form}
+    return render(request,'signup.html',context)
+    #if request.method == 'POST':
         #storing the data obtained from contact me page in variables.
-        name = request.POST['name']
-        state = request.POST['state']
-        district = request.POST['district']
-        town = request.POST['town']
-        ward = request.POST['ward']
-        prof = request.POST['prof']
-        interest = request.POST['interest']
-        email = request.POST['email']
-        phone = request.POST['phone']
-        password = request.POST['password']
-        cnfpassword = request.POST['cnfpassworf']
+        #name = request.POST['name']
+        #state = request.POST['state']
+        #district = request.POST['district']
+        #town = request.POST['town']
+        #ward = request.POST['ward']
+        #prof = request.POST['prof']
+        #nterest = request.POST['interest']
+        #email = request.POST['email']
+        #phone = request.POST['phone']
+        #password = request.POST['password']
+        #cnfpassword = request.POST['cnfpassword']
        #store image file here
         #creating an instance and saving the data to database
-        if id(password) == id(cnfpassword):  
-            user = User(name=name,add_state=state,add_district=district,add_town=town,add_ward=ward,prof=prof,interest=interest,email=email,phone_number=phone)
-            user.save()
-            print("data Saved!")
-            return render(request,'login.html')
-        else:
-            print("password don't match")
+        #if password == cnfpassword:  
+        #    user = User(name=name,add_state=state,add_district=district,add_town=town,add_ward=ward,prof=prof,interest=interest,email=email,phone_number=phone,password=password)
+        #    user.save()
+        #    print("data Saved!")
+        #    return render(request,'login.html')
+        #else:
+        #    print("password doesn't match")
 
-    return render(request,'signup.html')
+    #return render(request,'signup.html')
     
     
     
