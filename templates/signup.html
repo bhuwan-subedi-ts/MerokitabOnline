@@ -5,10 +5,74 @@
   </head>
   <body class="bg-dark text-light">
     <h1>Sign Up</h1>
-    <form class="site-form" method="post">
-        {% csrf_token %}
-        {{form}}
-        <input type="Submit" value="Signup">
+    
+    <form>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Your Name">
+      </div>
+
+      <div class="form-group">
+        <label for="state">State</label>
+        <select class="form-control" id="state" name="state">
+          <option>State No.1</option>
+          <option>State No.2</option>
+          <option>State No.3</option>
+          <option>State No.4</option>
+          <option>State No.5</option>
+          <option>State No.6</option>
+          <option>State No.7</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="district">District</label>
+        <input type="text" class="form-control" id="district" name="district" placeholder="Your District">
+      </div>
+
+      <div class="form-group">
+        <label for="town">town</label>
+        <input type="text" class="form-control" id="town" name="town" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label for="ward">ward</label>
+        <input type="text" class="form-control" id="ward" name="ward" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label for="profession">Profession</label>
+        <input type="text" class="form-control" id="prof" name="prof" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label for="interest">Interest</label>
+        <input type="text" class="form-control" id="interest" name="interest" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label for="cnfpassword">Confirm Password</label>
+        <input type="password" class="form-control" id="cnfpassword" name="cnfpassword" placeholder="">
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="phone" class="form-control" id="phone" name="phone" placeholder="Your Number">
+      </div>
+
+
+      <button type="submit" class="btn btn-success">Submit</button>
     </form>
 
 {% endblock body %}
