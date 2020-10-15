@@ -2,20 +2,24 @@ from django.db import models
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,authenticate,logout
-from home.models import User
+from home.models import User,Product
 from home.forms import CreateUserForm
 from django.contrib import messages
 
 # Create your views here.
 
 def home(request):
-    return HttpResponse('This is homepage.')
+    query = Product.objects.all()
+    context = {'query':query}
+    
+    return render(request,'homepage.html',context)
 
 def addproduct(request):
-    return HttpResponse('This is the page to add products.')
+    return render(request,'add_product.html')
 
 def login_view(request):
-    
+    query = Product.objects.all()
+    context = {'query':query}
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -24,7 +28,7 @@ def login_view(request):
 
         if user is not None:
             login(request,user)
-            return render(request,'home.html')
+            return render(request,'homepage.html',context)
     
     
     return render(request,'login.html')
