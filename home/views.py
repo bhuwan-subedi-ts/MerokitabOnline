@@ -2,7 +2,8 @@ from django.db import models
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,authenticate,logout
-from home.models import User,Product
+from django.contrib.auth.models import User
+from home.models import Product
 from home.forms import CreateUserForm
 from django.contrib import messages
 
@@ -15,7 +16,13 @@ def home(request):
     return render(request,'homepage.html',context)
 
 def addproduct(request):
-    return render(request,'add_product.html')
+    if request.user.is_authenticated:
+        prod = User.objects.all()
+        context = {'prod':prod}
+        return render(request,'add_product.html',context)
+        
+    else:
+        return render(request,'login.html')
 
 def login_view(request):
     query = Product.objects.all()

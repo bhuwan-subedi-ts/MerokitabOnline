@@ -7,13 +7,39 @@ from django.contrib.auth import get_user_model
 # Create your models here
 
 class Product(models.Model):
+    FICTION = 'FC'
+    ENGINEERING = 'ER'
+    SCIENCE = 'SC'
+    MANAGEMENT = 'MG'
+    LITERATURE = 'LT'
+    ARTS = 'AR'
+    SCHOOL = 'SC'
+    RELIGION = 'RG'
+    ENTRANCE = 'ET'
+    GOVERNMENT = 'GR'
+    MISC = 'MI'
+    LAW = 'LA'
+    CATEGORY_CHOICES = [
+        (FICTION, 'fiction'),
+        (ENGINEERING, 'Engineering'),
+        (SCIENCE, 'Science'),
+        (MANAGEMENT, 'Managemetn'),
+        (LITERATURE, 'Literature'),
+        (ARTS, 'Arts'),
+        (SCHOOL, 'School Level'),
+        (RELIGION, 'Religion'),
+        (LAW, 'Law'),
+        (ENTRANCE, 'Entrance Preparation'),
+        (GOVERNMENT,'Government Jobs'),
+        (MISC, 'Miscelleneous'),
+    ]
     name = models.CharField(max_length=100)
     photo = models.ImageField(upload_to='media')
     details = models.TextField()
     posted_by = models.ForeignKey(User,on_delete=models.CASCADE)
     price = models.TextField(max_length=6)
     published_date = models.DateField()
-    category = models.TextField(max_length=50)
+    category = models.CharField(choices=CATEGORY_CHOICES,default=MISC,max_length=100)
     featured = models.BooleanField()
 
 class admin(models.Model):
